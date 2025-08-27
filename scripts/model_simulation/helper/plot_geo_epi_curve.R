@@ -1,5 +1,8 @@
 library(geofacet)
 library(ggflags)
+library(dplyr)
+library(tidyr)
+library(shadowtext)
 source("scripts/model_fitting/helper/sim_cases.R")
 
 plot_geo_epi_curve <- function(
@@ -10,7 +13,8 @@ plot_geo_epi_curve <- function(
   colors_events,
   colors_labels,
   geo_grid=geo_grid,
-  add_flags=FALSE
+  add_flags=FALSE,
+  add_text=TRUE
 ){
   lineages_for_events <- gsub(" ", "_", lineages_for_events)
   names(colors_events) <- gsub(" ", "_", names(colors_events))
@@ -30,7 +34,7 @@ plot_geo_epi_curve <- function(
     geom_line(aes(x = date, y = Cases, group = lineage, color = lineage), linewidth = 0.7, linetype="solid", alpha=0.9) +
     scale_x_date(date_breaks = "1 month", date_labels = "%b") +
     scale_y_log10(  # Plot on log-scale
-      limits = c(1, 10^7.5),
+      limits = c(1, 10^8.75),
       breaks = c(1, 10, 10^3, 10^5, 10^7),
       labels = scales::trans_format("log10", scales::math_format(10^.x)),
       expand = c(0, 0)
@@ -51,18 +55,138 @@ plot_geo_epi_curve <- function(
       NULL
   }
 
+  # To quantify the model fit, we need to calculate the Pearson's r, MAE and RMSE for each region and each event
+  df_summary_fit <- tibble(
+    code = character(),
+    event = character(),
+    Lineage = character(),
+    pearson_r = numeric(),
+    mae = numeric(),
+    rmse = numeric())
+
+  for (i in seq_along(events)){
+    this_event <- events[i]
+    this_lineage <- lineages_for_events[i]
+    for (j in seq_along(geo_grid$code)){
+      this_code <- geo_grid$code[j]
+
+      df_values_actual <- df_meas_plot %>%
+        filter(code == this_code, lineage == this_lineage) %>%
+        select(date, Cases)
+
+      df_values_predicted <- data_quants %>%
+        filter(quantile_level == 0.5, code == this_code) %>%
+        select(date, all_of(this_event))
+
+      df_values_combined <- left_join(df_values_actual, df_values_predicted, by = "date")
+      stat_pearson <- cor(df_values_combined$Cases, df_values_combined[[this_event]], use = "complete.obs")
+      stat_mae <- mean(abs(df_values_combined$Cases - df_values_combined[[this_event]]), na.rm = TRUE)
+      stat_rmse <- sqrt(mean((df_values_combined$Cases - df_values_combined[[this_event]])^2, na.rm = TRUE))
+
+      # Store the statistics in the summary dataframe
+      df_summary_fit <- bind_rows(df_summary_fit, tibble(
+        code = this_code,
+        event = this_event,
+        Lineage = this_lineage,
+        pearson_r = stat_pearson,
+        mae = stat_mae,
+        rmse = stat_rmse
+      ))
+    }
+  }
+
+  write_csv(df_summary_fit, paste0(dir_rst, "model_fit_summary.csv"))
+
   # text of region
   df_meas_plot_text <- df_meas_plot %>% filter(date==min(df_meas_plot$date), lineage=="Cases")
   df_meas_plot_text <- left_join(df_meas_plot_text, geo_grid %>% select(code, name), by="code")
   p <- p +
-    geom_label(data = df_meas_plot_text, aes(x = date, y = 10^6.5, label = name), hjust = 0, vjust = 0, size = 2.5, nudge_x = 5, color=colors_spatial_units[order(names(colors_spatial_units))]) +
+    geom_label(data = df_meas_plot_text, aes(x = date, y = 10^8.25, label = name), hjust = 0, vjust = 0.5, size = 2, nudge_x = 5, color=colors_spatial_units[order(names(colors_spatial_units))]) +
     NULL
 
   df_meas_plot_text$code_flags <- tolower(df_meas_plot_text$code)
   if(add_flags){
     p <- p +
-      geom_flag(data = df_meas_plot_text %>% filter(!grepl("others", code)), aes(x = date+170, y = 10^7, country = code_flags), size = 5) +
+      geom_flag(data = df_meas_plot_text %>% filter(!grepl("others", code)), aes(x = date+165, y = 10^8, country = code_flags), size = 5) +
       NULL
+  }
+
+  df_summary_fit$event <- factor(df_summary_fit$event, levels = events, labels = lineages_for_events)
+  if(add_text){
+    # add pearson_r, mae and rmse in df_summary_fit. For each grid, show three lines for these three statistics respectively. In each line, the numbers for six different events are shown using different color per colors_events. use scientific notation for the numbers.
+    
+    # Create text annotations for model fit statistics
+    df_summary_fit_text <- df_summary_fit %>%
+      select(code, event, pearson_r, mae, rmse) %>%
+      pivot_longer(cols = c(pearson_r, mae, rmse), names_to = "metric", values_to = "value") %>%
+      mutate(
+      value_text = case_when(
+        metric == "pearson_r" ~ sprintf("%.2f", value),
+        TRUE ~ sprintf("%.1e", value)
+      )
+      ) %>%
+      group_by(code, metric) %>%
+      arrange(match(event, events)) %>%
+      summarise(
+      x_pos = case_when(
+        metric[1] == "pearson_r" ~ min(df_meas_plot$date),
+        metric[1] == "mae" ~ min(df_meas_plot$date) + 30,
+        metric[1] == "rmse" ~ min(df_meas_plot$date) + 80
+      ),
+      y_pos = 10^7.8,
+      .groups = "drop"
+      )
+
+    # Add metric labels
+    df_metric_labels <- df_summary_fit_text %>%
+      select(code, metric, x_pos, y_pos) %>%
+      distinct() %>%
+      mutate(
+      label = case_when(
+        metric == "pearson_r" ~ "r",
+        metric == "mae" ~ "MAE",
+        metric == "rmse" ~ "RMSE"
+      )
+      )
+
+    # Add individual colored values
+    df_metric_values <- df_summary_fit %>%
+      select(code, event, pearson_r, mae, rmse) %>%
+      pivot_longer(cols = c(pearson_r, mae, rmse), names_to = "metric", values_to = "value") %>%
+      mutate(
+      value_text = case_when(
+        metric == "pearson_r" ~ sprintf("%.2f", value),
+        TRUE ~ {
+        exponent <- floor(log10(value))
+        mantissa <- value / 10^exponent
+        sprintf("%.1f%s10^%g", mantissa, "%*%", exponent)
+        }
+      ),
+      x_pos = case_when(
+        metric == "pearson_r" ~ min(df_meas_plot$date),
+        metric == "mae" ~ min(df_meas_plot$date) + 30,
+        metric == "rmse" ~ min(df_meas_plot$date) + 80
+      )
+      ) %>%
+      group_by(code, metric) %>%
+      mutate(
+      y_offset = (seq_along(event) - 1) * 0.35,
+      y_pos = 10^(7 - y_offset)
+      ) %>%
+      ungroup()
+    
+    df_metric_values$value_text <- gsub("%*%10^0", "", df_metric_values$value_text, fixed = TRUE) # Remove the "10^0" part from the text
+    df_metric_values$value_text <- gsub("%*%10^1", "%*%10", df_metric_values$value_text, fixed = TRUE) 
+
+    p <- p +
+      geom_text(data = df_metric_labels,
+          aes(x = x_pos, y = y_pos, label = label),
+          hjust = 0, vjust = 1, size = 2, color = "grey30", fontface = "bold") +
+      geom_shadowtext(data = df_metric_values %>% filter(!grepl("NaN", value_text)),
+          aes(x = x_pos, y = y_pos, label = value_text, color = event),
+          hjust = 0, vjust = 0, size = 1.8, parse = TRUE, show.legend = FALSE,
+          bg.colour = "white", bg.r = 0.1) +
+      scale_color_manual(values = colors_events)
   }
 
   p <- p + 
@@ -99,7 +223,8 @@ plot_geo_epi_curve <- function(
       strip.background = element_blank(),
       strip.text = element_blank()
     ) + 
-    guides(colour = guide_legend(nrow = 1), fill = guide_legend(nrow = 1))
+    guides(colour = guide_legend(nrow = 1, override.aes = list(linewidth = 2)), 
+           fill = guide_legend(nrow = 1))
 
 }
 

@@ -13,7 +13,8 @@ n_cores <- 64
 
 ## Load data
 values_traveler_weight <- c(1/1000, 1/100, seq(0.1, 0.9, 0.2), 1)
-values_strategies <- c(expand.grid(c("T2", "T2a", "T7", "T7a", "T11", "T11a"), c("R", "H", "M")) %>% apply(1, paste, collapse="-"))
+# values_strategies <- c(expand.grid(c("T2", "T2a", "T7", "T7a", "T11", "T11a"), c("R", "H", "M")) %>% apply(1, paste, collapse="-"))
+values_strategies <- c(expand.grid(c("T2", "T7", "T11"), c("R", "H", "M")) %>% apply(1, paste, collapse="-"))
 values_id_unit_intro <- seq(0, 28, 1)
 df_all_values <- list.files(dir_model_data, "df_all_values_M4_\\d{1,2}.rds$", full.names = TRUE) %>% naturalsort::naturalsort() %>% lapply(readRDS) %>% bind_rows()
 

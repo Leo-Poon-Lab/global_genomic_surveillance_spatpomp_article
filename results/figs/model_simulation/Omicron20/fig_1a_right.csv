@@ -1,0 +1,269 @@
+code,rank_var,rank,code_flags
+AE,Travel volume,10,ae
+AE,Population,26,ae
+AE,Infected cases,26,ae
+AE,"Sequenced cases
+(Imported)",23,ae
+AE,"Sequenced cases
+(Community)",24,ae
+AE,Reported cases,26,ae
+AF_others,Travel volume,15,"Africa
+(others)"
+AF_others,Population,3,"Africa
+(others)"
+AF_others,Infected cases,3,"Africa
+(others)"
+AF_others,"Sequenced cases
+(Imported)",16,"Africa
+(others)"
+AF_others,"Sequenced cases
+(Community)",19,"Africa
+(others)"
+AF_others,Reported cases,19,"Africa
+(others)"
+AR,Travel volume,24,ar
+AR,Population,19,ar
+AR,Infected cases,16,ar
+AR,"Sequenced cases
+(Imported)",18,ar
+AR,"Sequenced cases
+(Community)",21,ar
+AR,Reported cases,13,ar
+AS_others,Travel volume,5,"Asia
+(others)"
+AS_others,Population,1,"Asia
+(others)"
+AS_others,Infected cases,1,"Asia
+(others)"
+AS_others,"Sequenced cases
+(Imported)",2,"Asia
+(others)"
+AS_others,"Sequenced cases
+(Community)",7,"Asia
+(others)"
+AS_others,Reported cases,3,"Asia
+(others)"
+AU,Travel volume,18,au
+AU,Population,22,au
+AU,Infected cases,23,au
+AU,"Sequenced cases
+(Imported)",19,au
+AU,"Sequenced cases
+(Community)",12,au
+AU,Reported cases,15,au
+BR,Travel volume,19,br
+BR,Population,6,br
+BR,Infected cases,6,br
+BR,"Sequenced cases
+(Imported)",11,br
+BR,"Sequenced cases
+(Community)",10,br
+BR,Reported cases,8,br
+CA,Travel volume,8,ca
+CA,Population,20,ca
+CA,Infected cases,21,ca
+CA,"Sequenced cases
+(Imported)",3,ca
+CA,"Sequenced cases
+(Community)",6,ca
+CA,Reported cases,17,ca
+CL,Travel volume,25,cl
+CL,Population,23,cl
+CL,Infected cases,22,cl
+CL,"Sequenced cases
+(Imported)",17,cl
+CL,"Sequenced cases
+(Community)",17,cl
+CL,Reported cases,18,cl
+DE,Travel volume,3,de
+DE,Population,11,de
+DE,Infected cases,13,de
+DE,"Sequenced cases
+(Imported)",6,de
+DE,"Sequenced cases
+(Community)",4,de
+DE,Reported cases,5,de
+ES,Travel volume,6,es
+ES,Population,18,es
+ES,Infected cases,17,es
+ES,"Sequenced cases
+(Imported)",5,es
+ES,"Sequenced cases
+(Community)",11,es
+ES,Reported cases,10,es
+EU_others,Travel volume,1,"Europe
+(others)"
+EU_others,Population,4,"Europe
+(others)"
+EU_others,Infected cases,4,"Europe
+(others)"
+EU_others,"Sequenced cases
+(Imported)",1,"Europe
+(others)"
+EU_others,"Sequenced cases
+(Community)",3,"Europe
+(others)"
+EU_others,Reported cases,1,"Europe
+(others)"
+FR,Travel volume,7,fr
+FR,Population,15,fr
+FR,Infected cases,12,fr
+FR,"Sequenced cases
+(Imported)",8,fr
+FR,"Sequenced cases
+(Community)",5,fr
+FR,Reported cases,4,fr
+GB,Travel volume,4,gb
+GB,Population,14,gb
+GB,Infected cases,14,gb
+GB,"Sequenced cases
+(Imported)",4,gb
+GB,"Sequenced cases
+(Community)",2,gb
+GB,Reported cases,6,gb
+HK,Travel volume,13,hk
+HK,Population,27,hk
+HK,Infected cases,27,hk
+HK,"Sequenced cases
+(Imported)",25,hk
+HK,"Sequenced cases
+(Community)",23,hk
+HK,Reported cases,21,hk
+IN,Travel volume,14,in
+IN,Population,2,in
+IN,Infected cases,2,in
+IN,"Sequenced cases
+(Imported)",13,in
+IN,"Sequenced cases
+(Community)",9,in
+IN,Reported cases,7,in
+JP,Travel volume,11,jp
+JP,Population,9,jp
+JP,Infected cases,18,jp
+JP,"Sequenced cases
+(Imported)",12,jp
+JP,"Sequenced cases
+(Community)",8,jp
+JP,Reported cases,12,jp
+KR,Travel volume,12,kr
+KR,Population,17,kr
+KR,Infected cases,20,kr
+KR,"Sequenced cases
+(Imported)",20,kr
+KR,"Sequenced cases
+(Community)",16,kr
+KR,Reported cases,11,kr
+MA,Travel volume,20,ma
+MA,Population,21,ma
+MA,Infected cases,19,ma
+MA,"Sequenced cases
+(Imported)",28,ma
+MA,"Sequenced cases
+(Community)",28,ma
+MA,Reported cases,25,ma
+MX,Travel volume,17,mx
+MX,Population,10,mx
+MX,Infected cases,9,mx
+MX,"Sequenced cases
+(Imported)",10,mx
+MX,"Sequenced cases
+(Community)",13,mx
+MX,Reported cases,16,mx
+NA_others,Travel volume,16,"North America
+(others)"
+NA_others,Population,13,"North America
+(others)"
+NA_others,Infected cases,11,"North America
+(others)"
+NA_others,"Sequenced cases
+(Imported)",15,"North America
+(others)"
+NA_others,"Sequenced cases
+(Community)",22,"North America
+(others)"
+NA_others,Reported cases,20,"North America
+(others)"
+NG,Travel volume,22,ng
+NG,Population,7,ng
+NG,Infected cases,7,ng
+NG,"Sequenced cases
+(Imported)",22,ng
+NG,"Sequenced cases
+(Community)",26,ng
+NG,Reported cases,27,ng
+NZ,Travel volume,26,nz
+NZ,Population,28,nz
+NZ,Infected cases,28,nz
+NZ,"Sequenced cases
+(Imported)",24,nz
+NZ,"Sequenced cases
+(Community)",20,nz
+NZ,Reported cases,23,nz
+OC_others,Travel volume,28,"Oceania
+(others)"
+OC_others,Population,29,"Oceania
+(others)"
+OC_others,Infected cases,29,"Oceania
+(others)"
+OC_others,"Sequenced cases
+(Imported)",27,"Oceania
+(others)"
+OC_others,"Sequenced cases
+(Community)",29,"Oceania
+(others)"
+OC_others,Reported cases,29,"Oceania
+(others)"
+PG,Travel volume,27,pg
+PG,Population,25,pg
+PG,Infected cases,25,pg
+PG,"Sequenced cases
+(Imported)",29,pg
+PG,"Sequenced cases
+(Community)",25,pg
+PG,Reported cases,28,pg
+SA_others,Travel volume,21,"South America
+(others)"
+SA_others,Population,8,"South America
+(others)"
+SA_others,Infected cases,8,"South America
+(others)"
+SA_others,"Sequenced cases
+(Imported)",9,"South America
+(others)"
+SA_others,"Sequenced cases
+(Community)",14,"South America
+(others)"
+SA_others,Reported cases,14,"South America
+(others)"
+TN,Travel volume,29,tn
+TN,Population,24,tn
+TN,Infected cases,24,tn
+TN,"Sequenced cases
+(Imported)",26,tn
+TN,"Sequenced cases
+(Community)",27,tn
+TN,Reported cases,24,tn
+TR,Travel volume,9,tr
+TR,Population,12,tr
+TR,Infected cases,10,tr
+TR,"Sequenced cases
+(Imported)",14,tr
+TR,"Sequenced cases
+(Community)",15,tr
+TR,Reported cases,9,tr
+US,Travel volume,2,us
+US,Population,5,us
+US,Infected cases,5,us
+US,"Sequenced cases
+(Imported)",7,us
+US,"Sequenced cases
+(Community)",1,us
+US,Reported cases,2,us
+ZA,Travel volume,23,za
+ZA,Population,16,za
+ZA,Infected cases,15,za
+ZA,"Sequenced cases
+(Imported)",21,za
+ZA,"Sequenced cases
+(Community)",18,za
+ZA,Reported cases,22,za

@@ -15,6 +15,15 @@ df_fitting <- readRDS("results/model_data/data_fitting_Omicron20.rds")
 df_transit <- tibble(code=df_fitting$country_under_investigation, transit_rates=df_fitting$transit_rates)
 write_csv(df_transit, paste0(dir_rst_fig1, "transit_rates.csv"))
 
+## Make the rank plot into a table
+df_fig1a_right <- read_csv("results/figs/model_simulation/Omicron20/fig_1a_right.csv") 
+df_fig1a_right_transformed <- df_fig1a_right %>% pivot_wider(names_from = "rank_var", values_from = "rank")
+df_fig1a_right_transformed <- left_join(df_fig1a_right_transformed, cross_check_table %>% select(code, loc_name), by = "code")
+df_fig1a_right_transformed$loc_name[is.na(df_fig1a_right_transformed$loc_name)] <- df_fig1a_right_transformed$code_flags[is.na(df_fig1a_right_transformed$loc_name)]
+df_fig1a_right_transformed <- df_fig1a_right_transformed %>% select(-code_flags, -code)
+df_fig1a_right_transformed <- df_fig1a_right_transformed %>% select(Region = loc_name, everything())
+writexl::write_xlsx(df_fig1a_right_transformed %>% arrange(`Travel volume`, Population, `Infected cases`, `Reported cases`, `Sequenced cases\n(Community)`, `Sequenced cases\n(Imported)`), "results/figs/model_simulation/Omicron20/fig_1a_right_refmt.xlsx")
+
 ## Fig 1B, nothing to do here
 
 ## Fig 1C, nothing to do here

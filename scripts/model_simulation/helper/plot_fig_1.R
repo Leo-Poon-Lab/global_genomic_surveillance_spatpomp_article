@@ -220,6 +220,7 @@ plot_fig_1 <- function(
   p_fig_1a_leftright <- p_fig_1a_left + p_fig_1a_right + plot_layout(ncol=2, widths = c(1, 1.5))
   ggsave(paste0(dir_rst, "/fig_1a_leftright.pdf"), plot=p_fig_1a_leftright, width=8*2, height=8, dpi=400)
 
+  write_csv(df_plot_1a_right, paste0(dir_rst, "/fig_1a_right.csv"))
 
   # Fig 1b. data
   ## Transmission map showing the spread routes of Omicron BA.1 and BA.2 variants
@@ -437,7 +438,7 @@ plot_fig_1 <- function(
     NULL
   }
 
-  df_spread_BA1_first_2w <- transform_to_df_spread(
+  df_spread_BA1_first_1w <- transform_to_df_spread(
     df_sims,
     date_lower=dates_intro[1],
     date_upper=dates_intro[1]+7*1/365.25,
@@ -450,7 +451,7 @@ plot_fig_1 <- function(
     x_adjust=1,
     spread_direction = "right"
   )
-  df_spread_BA2_first_2w <- transform_to_df_spread(
+  df_spread_BA2_first_1w <- transform_to_df_spread(
     df_sims,
     dates_intro[2],
     dates_intro[2]+7*1/365.25,
@@ -463,8 +464,8 @@ plot_fig_1 <- function(
     x_adjust=1,
     spread_direction = "left"
   )
-  if(nrow(df_spread_BA1_first_2w)>0 | nrow(df_spread_BA2_first_2w)>0){
-    p_fig_1b_top <- plot_spread_map(df_spread_1=df_spread_BA1_first_2w, df_spread_2=df_spread_BA2_first_2w, 0.4, size=1, "The first week after emergence")
+  if(nrow(df_spread_BA1_first_1w)>0 | nrow(df_spread_BA2_first_1w)>0){
+    p_fig_1b_top <- plot_spread_map(df_spread_1=df_spread_BA1_first_1w, df_spread_2=df_spread_BA2_first_1w, 0.4, size=1, "The first week after emergence")
     ggsave(paste0(dir_rst, "/fig_1b_top.jpg"), plot=p_fig_1b_top, width=10, height=10, dpi=400)
     ggsave(paste0(dir_rst, "/fig_1b_top.pdf"), plot=p_fig_1b_top, width=10, height=10, dpi=400)
   } else {
@@ -472,7 +473,7 @@ plot_fig_1 <- function(
     file.remove(paste0(dir_rst, "/fig_1b_top.pdf"))
   }
 
-  df_spread_BA1_second_2w <- transform_to_df_spread(
+  df_spread_BA1_second_1w <- transform_to_df_spread(
     df_sims,
     date_lower=dates_intro[1]+7*1/365.25,
     date_upper=dates_intro[1]+7*2/365.25,
@@ -485,7 +486,7 @@ plot_fig_1 <- function(
     x_adjust=1,
     spread_direction = "right"
   )
-  df_spread_BA2_second_2w <- transform_to_df_spread(
+  df_spread_BA2_second_1w <- transform_to_df_spread(
     df_sims,
     dates_intro[2]+7*1/365.25,
     dates_intro[2]+7*2/365.25,
@@ -498,13 +499,48 @@ plot_fig_1 <- function(
     x_adjust=1,
     spread_direction = "left"
   )
-  if(nrow(df_spread_BA1_second_2w)>0 | nrow(df_spread_BA2_second_2w)>0){
-    p_fig_1b_middle <- plot_spread_map(df_spread_1=df_spread_BA1_second_2w, df_spread_2=df_spread_BA2_second_2w, 0.4, size=0.5, "The second week after emergence")
+  if(nrow(df_spread_BA1_second_1w)>0 | nrow(df_spread_BA2_second_1w)>0){
+    p_fig_1b_middle <- plot_spread_map(df_spread_1=df_spread_BA1_second_1w, df_spread_2=df_spread_BA2_second_1w, 0.4, size=0.5, "The second week after emergence")
     ggsave(paste0(dir_rst, "/fig_1b_middle.jpg"), plot=p_fig_1b_middle, width=10, height=10, dpi=400)
     ggsave(paste0(dir_rst, "/fig_1b_middle.pdf"), plot=p_fig_1b_middle, width=10, height=10, dpi=400)
   } else {
     file.remove(paste0(dir_rst, "/fig_1b_middle.jpg"))
     file.remove(paste0(dir_rst, "/fig_1b_middle.pdf"))
+  }
+
+df_spread_BA1_first_2w <- transform_to_df_spread(
+    df_sims,
+    date_lower=dates_intro[1],
+    date_upper=dates_intro[1]+7*2/365.25,
+    col_i_infected_new="C_2_i_infected_new",
+    col_i_infected_origin_pattern="C_2_i_infected_origin.+_new$",
+    variant_name="Omicron BA.1",
+    df_pos,
+    point_diameter=3/4,
+    square_side_length=3,
+    x_adjust=1,
+    spread_direction = "right"
+  )
+  df_spread_BA2_first_2w <- transform_to_df_spread(
+    df_sims,
+    dates_intro[2],
+    dates_intro[2]+7*2/365.25,
+    "C_3_i_infected_new",
+    "C_3_i_infected_origin.+_new$",
+    "Omicron BA.2",
+    df_pos,
+    point_diameter=3/4,
+    square_side_length=3,
+    x_adjust=1,
+    spread_direction = "left"
+  )
+  if(nrow(df_spread_BA1_first_2w)>0 | nrow(df_spread_BA2_first_2w)>0){
+    p_fig_1b_middle <- plot_spread_map(df_spread_1=df_spread_BA1_first_2w, df_spread_2=df_spread_BA2_first_2w, 0.4, size=0.5, "The 1st to 2nd week after emergence")
+    ggsave(paste0(dir_rst, "/fig_1b_top_middle.jpg"), plot=p_fig_1b_middle, width=10, height=10, dpi=400)
+    ggsave(paste0(dir_rst, "/fig_1b_top_middle.pdf"), plot=p_fig_1b_middle, width=10, height=10, dpi=400)
+  } else {
+    file.remove(paste0(dir_rst, "/fig_1b_top_middle.jpg"))
+    file.remove(paste0(dir_rst, "/fig_1b_top_middle.pdf"))
   }
 
   df_spread_BA1_third_2w <- transform_to_df_spread(
@@ -581,6 +617,6 @@ plot_fig_1c <- function(
     geo_grid=layout_geo_grid_29,
     add_flags=TRUE
     )
-  ggsave(paste0(dir_rst, "/fig_1c.jpg"), plot=p_fig_1c, width=10*1.2, height=10, dpi=400)
-  ggsave(paste0(dir_rst, "/fig_1c.pdf"), plot=p_fig_1c, width=10*1.2, height=10, dpi=400)
+  ggsave(paste0(dir_rst, "/fig_1c.jpg"), plot=p_fig_1c, width=10.5, height=10.5, dpi=400)
+  ggsave(paste0(dir_rst, "/fig_1c.pdf"), plot=p_fig_1c, width=10.5, height=10.5, dpi=400)
 }

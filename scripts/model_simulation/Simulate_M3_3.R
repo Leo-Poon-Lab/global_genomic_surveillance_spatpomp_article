@@ -14,7 +14,8 @@ stopifnot(file.exists(dir_model_data))
 values_change_IDR <- c(1/1000, 1/100, 1/10, 0.5, 1, 1.5, 2)
 values_change_DSR <- c(1/1000, 1/100, 1/10, 0.5, 1, 1.5, 2)
 values_traveler_weight <- c(1/1000, 1/100, seq(0.1, 0.9, 0.2), 1)
-values_strategies <- c(expand.grid(c("T3", "T3a", "T7", "T7a", "T11", "T11a"), c("R", "H", "M")) %>% apply(1, paste, collapse="-"))
+# values_strategies <- c(expand.grid(c("T3", "T3a", "T7", "T7a", "T11", "T11a"), c("R", "H", "M")) %>% apply(1, paste, collapse="-"))
+values_strategies <- c(expand.grid(c("T3", "T7", "T11"), c("R", "H", "M")) %>% apply(1, paste, collapse="-"))
 
 df_all_values <- list.files(dir_model_data, "df_all_values_M3_\\d+.rds$", full.names = TRUE) %>% naturalsort::naturalsort() %>% lapply(readRDS) %>% bind_rows()
 

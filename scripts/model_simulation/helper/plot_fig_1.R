@@ -159,10 +159,11 @@ plot_fig_1 <- function(
     geom_label(data = df_pos %>% filter(grepl("others", code_flags)), aes(x = lon, y = lat, label = code, color=code), size = 2.3, alpha=0.9) + 
     scale_color_manual(values = colors_spatial_units)+
     scale_size_identity()+
-    theme_void() +
+    theme_bw() +
     coord_sf(xlim = c(-150, 180), ylim = c(-60, 80), expand = TRUE)+
     theme(
-      legend.position = "none"
+      legend.position = "none",
+      axis.title = element_blank()
       ) + 
     NULL
   ggsave(paste0(dir_rst, "/fig_1a_left.pdf"), plot=p_fig_1a_left, width=8*1.2, height=8, dpi=400)
@@ -427,9 +428,10 @@ plot_fig_1 <- function(
       breaks = c(df_spread_1$color[1], df_spread_2$color[1]),
       labels = c(df_spread_1$variant[1], df_spread_2$variant[1]),
       guide = "legend") +
-    theme_void() +
+    theme_bw() +
     theme(
-      legend.position = "bottom"
+      legend.position = "bottom",
+      axis.title = element_blank()
       ) + 
     guides(
       color = guide_legend(override.aes = list(alpha = 1, lwd = 2)),
@@ -536,6 +538,7 @@ df_spread_BA1_first_2w <- transform_to_df_spread(
   )
   if(nrow(df_spread_BA1_first_2w)>0 | nrow(df_spread_BA2_first_2w)>0){
     p_fig_1b_middle <- plot_spread_map(df_spread_1=df_spread_BA1_first_2w, df_spread_2=df_spread_BA2_first_2w, 0.4, size=0.5, "The 1st to 2nd week after emergence")
+    writexl::write_xlsx(p_fig_1b_middle$data, paste0(dir_rst, "/fig_1b_top_middle_source.xlsx"))
     ggsave(paste0(dir_rst, "/fig_1b_top_middle.jpg"), plot=p_fig_1b_middle, width=10, height=10, dpi=400)
     ggsave(paste0(dir_rst, "/fig_1b_top_middle.pdf"), plot=p_fig_1b_middle, width=10, height=10, dpi=400)
   } else {
@@ -571,6 +574,7 @@ df_spread_BA1_first_2w <- transform_to_df_spread(
   )
   if(nrow(df_spread_BA1_third_2w)>0 | nrow(df_spread_BA2_third_2w)>0){
     p_fig_1b_bottom <- plot_spread_map(df_spread_1=df_spread_BA1_third_2w, df_spread_2=df_spread_BA2_third_2w, 0.4, size=0.5, "The 3rd to 4th weeks after emergence")
+    writexl::write_xlsx(p_fig_1b_bottom$data, paste0(dir_rst, "/p_fig_1b_bottom_source.xlsx"))
     ggsave(paste0(dir_rst, "/fig_1b_bottom.jpg"), plot=p_fig_1b_bottom, width=10, height=10, dpi=400)
     ggsave(paste0(dir_rst, "/fig_1b_bottom.pdf"), plot=p_fig_1b_bottom, width=10, height=10, dpi=400)
   } else {

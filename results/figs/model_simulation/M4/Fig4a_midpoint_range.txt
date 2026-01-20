@@ -1,2 +1,0 @@
-midpoint_value: 15, range_color: 1
-midpoint_value: 15, range_color: 33
